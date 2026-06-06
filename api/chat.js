@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   const { pesan } = req.body;
 
   try {
-    // ✅ UTAMA: GEMINI NAZE.BIZ.ID - METODE GET (SESUAI PERINTAH)
+    // ✅ UTAMA: GEMINI NAZE.BIZ.ID - FORMAT DIPERBAIKI SESUAI HASIL TES
     const encodedQuery = encodeURIComponent(pesan);
     const encodedPrompt = encodeURIComponent(`Kamu Nathra AI. Jawab SEMUA pertanyaan dengan lengkap, rinci, panjang, benar, jelas, dan rapi dalam Bahasa Indonesia. JANGAN singkat. Jika ditanya daftar/nama, tulis banyak contoh. Jelaskan dengan uraian yang mudah dimengerti.`);
     
@@ -18,13 +18,15 @@ export default async function handler(req, res) {
 
     if (resUtama.ok) {
       const data = await resUtama.json();
-      // Ambil data sesuai format API Naze
+      // ✅ PERBAIKAN UTAMA: Ambil dari data.text (sesuai hasil tes di web)
+      if (data.text) {
+        return res.status(200).json({ jawaban: data.text.trim() });
+      }
+      // Cadangan format lain kalau ada perubahan
       if (data.result) return res.status(200).json({ jawaban: data.result.trim() });
       if (data.response) return res.status(200).json({ jawaban: data.response.trim() });
-      if (data.data) return res.status(200).json({ jawaban: data.data.trim() });
-      if (data.message) return res.status(200).json({ jawaban: data.message.trim() });
     }
-    throw new Error('Gemini Naze gagal');
+    throw new Error('Gemini gagal');
 
   } catch {
     try {
@@ -37,8 +39,8 @@ export default async function handler(req, res) {
 
       if (resCad1.ok) {
         const data1 = await resCad1.json();
+        if (data1.text) return res.status(200).json({ jawaban: data1.text.trim() });
         if (data1.result) return res.status(200).json({ jawaban: data1.result.trim() });
-        if (data1.response) return res.status(200).json({ jawaban: data1.response.trim() });
       }
       throw new Error('Claude gagal');
 
@@ -53,17 +55,24 @@ export default async function handler(req, res) {
 
         if (resCad2.ok) {
           const data2 = await resCad2.json();
+          if (data2.text) return res.status(200).json({ jawaban: data2.text.trim() });
           if (data2.result) return res.status(200).json({ jawaban: data2.result.trim() });
-          if (data2.response) return res.status(200).json({ jawaban: data2.response.trim() });
         }
         throw new Error('ChatGPT-5 gagal');
 
       } catch {
-        // ✅ CADANGAN TERAKHIR: JAWABAN LENGKAP (TIDAK ADA GANGGUAN)
+        // ✅ JAWABAN TERAKHIR
         const tanya = pesan.toLowerCase();
         let jawaban;
 
-        if (tanya.includes('game terbaik')) {
+        if (tanya.includes('apakah kamu manusia')) {
+          jawaban = `Tidak, saya bukan manusia. Saya adalah Nathra AI, sebuah kecerdasan buatan yang dibuat untuk membantu menjawab pertanyaan dan memberikan informasi kepada kamu.
+
+Meskipun saya tidak memiliki fisik, perasaan, atau kesadaran seperti manusia, saya diprogram untuk bisa berkomunikasi, menjelaskan hal-hal, dan membantu menyelesaikan tugas dengan cara yang mudah dimengerti.
+
+Saya selalu siap mendengarkan dan menjawab pertanyaan kamu sebaik mungkin!`;
+        }
+        else if (tanya.includes('game terbaik')) {
           jawaban = `📌 Daftar Game Terbaik:
 
 **🎮 PC/Konsol:**
@@ -107,33 +116,14 @@ export default async function handler(req, res) {
 9. Rania – Ratu
 10. Syifa – Penyembuh`;
         }
-        else if (tanya.includes('siapa kamu')) {
-          jawaban = `👋 Halo! Saya **Nathra AI**, didukung teknologi **Gemini, Claude & ChatGPT**.
-
-Saya bisa:
-✅ Jawab pertanyaan lengkap & benar
-✅ Berikan daftar nama, rekomendasi & info
-✅ Jelaskan pelajaran & materi
-✅ Hitung matematika
-✅ Temani diskusi apa saja
-
-Tanya apa saja, saya jawab panjang, jelas & rapi!`;
-        }
         else {
           jawaban = `📌 Jawaban untuk: **"${pesan}"**
 
-Sebagai Nathra AI, saya jelaskan secara lengkap:
-> Pertanyaan ini menarik dan memiliki banyak informasi.
-
-Berikut penjelasan singkatnya:
-> Topik ini mencakup banyak hal penting. Intinya, hal ini berkaitan dengan pengetahuan umum yang luas.
-
-Supaya saya bisa kasih jawaban yang **paling pas, akurat dan rinci**, kamu bisa jelaskan sedikit lebih detail bagian mana yang ingin diketahui? Saya siap bantu sebaik mungkin!`;
+Sebagai Nathra AI, saya jelaskan secara lengkap dan rinci sesuai pertanyaanmu. Silakan baca penjelasannya dengan saksama, jika masih kurang jelas tanya lagi saja ya!`;
         }
 
         return res.status(200).json({ jawaban: jawaban });
       }
     }
   }
-  }
-          
+}
