@@ -1,8 +1,12 @@
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).end();
+  if (req.method !== 'POST') return res.status(405).json({ jawaban: 'Metode tidak diizinkan' });
 
   const { pesan } = req.body;
   const API_KEY = process.env.OPENROUTER_API_KEY;
+
+  if (!API_KEY) {
+    return res.status(500).json({ jawaban: 'API Key belum diatur' });
+  }
 
   try {
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -10,11 +14,11 @@ export default async function handler(req, res) {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${API_KEY}`,
-        'HTTP-Referer': 'https://namakamu.vercel.app',
+        'HTTP-Referer': 'https://project-chatbot.vercel.app',
         'X-Title': 'Nathra AI'
       },
       body: JSON.stringify({
-        model: 'deepseek/deepseek-chat:free',
+        model: 'google/gemini-2.0-flash-thinking-exp:free',
         messages: [
           { 
             role: 'system', 
@@ -27,11 +31,22 @@ export default async function handler(req, res) {
       })
     });
 
+    if (!response.ok) {
+      throw new Error('Koneksi ke layanan AI gagal');
+    }
+
     const data = await response.json();
-    const jawaban = data.choices[0].message.content;
-    res.status(200).json({ jawaban });
+    
+    if (data && data.choices && data.choices[0] && data.choices[0].message) {
+      const jawaban = data.choices[0].message.content;
+      return res.status(200).json({ jawaban: jawaban.trim() });
+    } else {
+      throw new Error('Format respon tidak sesuai');
+    }
 
   } catch (err) {
-    res.status(500).json({ jawaban: 'Sistem sedang mengalami gangguan teknis. Silakan coba kembali beberapa saat lagi.' });
+    res.status(200).json({ 
+      jawaban: 'Maaf, sistem sedang sibuk atau tidak terhubung. Silakan coba lagi sebentar.' 
+    });
   }
 }
