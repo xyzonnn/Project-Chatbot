@@ -1,9 +1,8 @@
 # Project-Chatbot
 
 ## STRUCTURE PROJECT
-
-Chatbot/
-├── 📁 api/
-│   └── chat.js
-├── 📄 index.html
+Chatbot/<br>
+├── 📁 api/<br>
+│   └── chat.js<br>
+├── 📄 index.html<br>
 └── 📄 vercel.json
