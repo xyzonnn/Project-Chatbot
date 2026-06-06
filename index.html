@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Nathra AI</title>
 
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
 
   <script>
@@ -24,7 +28,9 @@
   </script>
 
   <style type="text/tailwindcss">
+
     @layer utilities {
+
       .scrollbar-hide {
         -ms-overflow-style: none;
         scrollbar-width: none;
@@ -35,13 +41,15 @@
       }
 
       .avatar-img {
-        width: 32px;
-        height: 32px;
+        width: 38px;
+        height: 38px;
         border-radius: 9999px;
         object-fit: cover;
         border: 2px solid #8B5CF6;
       }
+
     }
+
   </style>
 </head>
 
@@ -49,17 +57,31 @@
 
   <!-- HEADER -->
   <header class="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
+
     <div class="flex items-center gap-3">
+
+      <!-- LOGO AI -->
       <img
         src="https://r2.erweima.ai/i/81595c8c-1350-4496-8b76-8f13b8069900.png"
         class="avatar-img"
       >
-      <h1 class="font-semibold text-lg text-gray-800">Nathra AI</h1>
+
+      <div>
+        <h1 class="font-semibold text-lg text-gray-800">
+          Nathra AI
+        </h1>
+
+        <p class="text-xs text-gray-500">
+          AI Assistant
+        </p>
+      </div>
+
     </div>
 
-    <p class="text-xs text-gray-500">
-      Asisten Cerdas
-    </p>
+    <div class="text-primary text-xl">
+      <i class="fa fa-bolt"></i>
+    </div>
+
   </header>
 
   <!-- CHAT -->
@@ -68,31 +90,41 @@
     class="flex-1 overflow-y-auto scrollbar-hide px-4 py-6 space-y-6 max-w-4xl mx-auto w-full"
   >
 
-    <!-- PESAN AWAL -->
+    <!-- CHAT AWAL -->
     <div class="flex gap-3">
+
       <img
         src="https://r2.erweima.ai/i/81595c8c-1350-4496-8b76-8f13b8069900.png"
         class="avatar-img flex-shrink-0 mt-1"
       >
 
       <div class="bg-aiBg rounded-2xl p-4 rounded-tl-sm max-w-[85%]">
+
         <p class="text-sm text-gray-800 leading-relaxed">
-          Halo! 👋<br>
-          Saya Nathra AI. Tanya apa saja atau kirimkan gambar/foto,
-          saya akan bantu menjawab dengan lengkap!
+          Halo! 👋<br><br>
+
+          Saya <b>Nathra AI</b>, asisten cerdas yang siap membantu kamu.
+          Tanya apa saja atau kirim gambar/foto, nanti saya jawab dengan lengkap 🚀
         </p>
+
       </div>
+
     </div>
 
   </div>
 
-  <!-- PREVIEW -->
+  <!-- PREVIEW IMAGE -->
   <div
     id="previewContainer"
     class="hidden px-4 max-w-4xl mx-auto w-full mb-2"
   >
+
     <div class="bg-white border border-gray-200 rounded-xl p-2 inline-block relative">
-      <img id="imagePreview" class="max-h-32 rounded-lg">
+
+      <img
+        id="imagePreview"
+        class="max-h-32 rounded-lg"
+      >
 
       <button
         onclick="hapusGambar()"
@@ -100,11 +132,14 @@
       >
         <i class="fa fa-times"></i>
       </button>
+
     </div>
+
   </div>
 
   <!-- INPUT -->
   <div class="bg-white border-t border-gray-200 px-4 py-4">
+
     <div class="max-w-4xl mx-auto relative flex items-center bg-gray-100 rounded-full pl-4 pr-2 py-2">
 
       <!-- FILE -->
@@ -123,26 +158,24 @@
         onchange="pilihGambar(event)"
       >
 
-      <!-- TEXT -->
+      <!-- INPUT -->
       <input
         id="userInput"
         type="text"
-        placeholder="Ketik pesan atau kirim gambar..."
-        class="flex-1 bg-transparent border-0 focus:ring-0 outline-none px-3 py-2 text-sm text-gray-800 placeholder:text-gray-500"
+        placeholder="Tulis pesan..."
+        class="flex-1 bg-transparent border-0 focus:ring-0 outline-none px-3 py-2 text-sm text-gray-800"
       >
 
       <!-- SEND -->
       <button
         onclick="kirimPesan()"
-        class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center"
+        class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center"
       >
         <i class="fa fa-paper-plane"></i>
       </button>
+
     </div>
 
-    <p class="text-center text-xs text-gray-400 mt-3">
-      © 2026 Nathra AI
-    </p>
   </div>
 
   <script>
@@ -152,9 +185,9 @@
     const AVATAR_AI =
       "https://r2.erweima.ai/i/81595c8c-1350-4496-8b76-8f13b8069900.png";
 
-    // =========================
+    // ======================
     // PILIH GAMBAR
-    // =========================
+    // ======================
 
     function pilihGambar(event) {
 
@@ -174,14 +207,15 @@
         document
           .getElementById("previewContainer")
           .classList.remove("hidden");
+
       };
 
       reader.readAsDataURL(file);
     }
 
-    // =========================
+    // ======================
     // HAPUS GAMBAR
-    // =========================
+    // ======================
 
     function hapusGambar() {
 
@@ -194,15 +228,17 @@
       document.getElementById("imageInput").value = "";
     }
 
-    // =========================
-    // TAMBAH CHAT
-    // =========================
+    // ======================
+    // CHAT
+    // ======================
 
     function tambahPesan(jenis, teks, gambar = "") {
 
-      const chatBox = document.getElementById("chatBox");
+      const chatBox =
+        document.getElementById("chatBox");
 
-      const div = document.createElement("div");
+      const div =
+        document.createElement("div");
 
       div.className =
         "flex gap-3 " +
@@ -214,6 +250,7 @@
 
         div.innerHTML = `
           <div class="bg-userBg rounded-2xl p-4 rounded-tr-sm max-w-[85%]">
+
             ${gambar
               ? `<img src="${gambar}" class="max-h-40 rounded-lg mb-3">`
               : ""
@@ -223,6 +260,7 @@
               ? `<p class="text-sm text-gray-800 whitespace-pre-wrap">${teks}</p>`
               : ""
             }
+
           </div>
 
           <div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center flex-shrink-0 mt-1">
@@ -253,21 +291,25 @@
       });
     }
 
-    // =========================
-    // STATUS TYPING
-    // =========================
+    // ======================
+    // LOADING
+    // ======================
 
     function tambahStatus() {
 
-      const chatBox = document.getElementById("chatBox");
+      const chatBox =
+        document.getElementById("chatBox");
 
-      const id = "stat" + Date.now();
+      const id =
+        "stat" + Date.now();
 
-      const div = document.createElement("div");
+      const div =
+        document.createElement("div");
 
       div.id = id;
 
-      div.className = "flex gap-3 justify-start";
+      div.className =
+        "flex gap-3 justify-start";
 
       div.innerHTML = `
         <img
@@ -277,9 +319,13 @@
 
         <div class="bg-aiBg rounded-2xl p-4 rounded-tl-sm">
           <div class="flex gap-1.5 items-center h-5">
+
             <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+
             <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:.15s"></div>
+
             <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:.3s"></div>
+
           </div>
         </div>
       `;
@@ -294,13 +340,14 @@
       return id;
     }
 
-    // =========================
-    // GANTI STATUS
-    // =========================
+    // ======================
+    // GANTI LOADING
+    // ======================
 
     function gantiStatusJawaban(id, teks) {
 
-      const el = document.getElementById(id);
+      const el =
+        document.getElementById(id);
 
       if (!el) return;
 
@@ -316,49 +363,52 @@
       `;
     }
 
-    // =========================
+    // ======================
     // KIRIM PESAN
-    // =========================
+    // ======================
 
     async function kirimPesan() {
 
-      const input = document.getElementById("userInput");
+      const input =
+        document.getElementById("userInput");
 
-      const teks = input.value.trim();
+      const teks =
+        input.value.trim();
 
       if (!teks && !base64Gambar) return;
 
-      tambahPesan("user", teks, base64Gambar);
+      // tampil user
+      tambahPesan(
+        "user",
+        teks,
+        base64Gambar
+      );
 
       input.value = "";
 
-      const idStatus = tambahStatus();
+      // loading
+      const idStatus =
+        tambahStatus();
 
       try {
 
-        // =========================
-        // API NAZE
-        // =========================
+        // FETCH API VERCEL
+        const response = await fetch(
+          `/api/chat?pesan=${encodeURIComponent(teks)}&media=${encodeURIComponent(base64Gambar)}`
+        );
 
-        const url =
-          `https://api.naze.biz.id/ai/gemini?query=${encodeURIComponent(teks)}&prompt=${encodeURIComponent("Kamu Nathra AI, jawab dengan lengkap dan bahasa Indonesia.")}&media=${encodeURIComponent(base64Gambar)}&apikey=nz-7c031c8d68`;
-
-        const response = await fetch(url);
-
-        const data = await response.json();
+        const data =
+          await response.json();
 
         console.log(data);
 
-        // FIX UNDEFINED
-        const jawaban =
-          data.text ||
-          data.result ||
-          data.message ||
-          data.response ||
-          "Tidak ada jawaban.";
+        // tampil jawaban
+        gantiStatusJawaban(
+          idStatus,
+          data.jawaban || "Tidak ada jawaban."
+        );
 
-        gantiStatusJawaban(idStatus, jawaban);
-
+        // reset gambar
         hapusGambar();
 
       } catch (err) {
@@ -367,8 +417,9 @@
 
         gantiStatusJawaban(
           idStatus,
-          "Ups, API error atau limit."
+          "Ups, terjadi error."
         );
+
       }
     }
 
@@ -384,5 +435,6 @@
       });
 
   </script>
+
 </body>
-        </html>
+</html>
