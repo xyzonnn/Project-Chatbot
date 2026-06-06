@@ -5,178 +5,176 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nathra AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            primary: '#4F46E5',
-            secondary: '#6366F1',
-            dark: '#1F2937',
-            light: '#F3F4F6'
-          },
-          fontFamily: {
-            inter: ['Inter', 'system-ui', 'sans-serif'],
-          },
+            primary: '#8B5CF6',
+            secondary: '#F9FAFB',
+            aiBg: '#EDE9FE',
+            userBg: '#DDD6FE'
+          }
         }
       }
     }
   </script>
   <style type="text/tailwindcss">
     @layer utilities {
-      .scrollbar-hide {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
+      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       .scrollbar-hide::-webkit-scrollbar { display: none; }
-      .shadow-custom { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-      .shadow-custom-lg { box-shadow: 0 4px 20px rgba(79, 70, 229, 0.15); }
+      .avatar-img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #8B5CF6;
+      }
     }
   </style>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-50 min-h-screen font-inter text-gray-800">
-  
-  <div class="container max-w-2xl mx-auto px-4 py-6 h-screen flex flex-col">
+<body class="bg-secondary min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
+    <div class="flex items-center gap-3">
+      <img src="https://r2.erweima.ai/i/81595c8c-1350-4496-8b76-8f13b8069900.png" alt="Logo" class="avatar-img w-8 h-8">
+      <h1 class="font-semibold text-lg text-gray-800">Nathra AI</h1>
+    </div>
+    <p class="text-xs text-gray-500">Asisten Cerdas</p>
+  </header>
+
+  <!-- Chat Box -->
+  <div id="chatBox" class="flex-1 overflow-y-auto scrollbar-hide px-4 py-6 space-y-6 max-w-4xl mx-auto w-full">
     
-    <!-- Header -->
-    <header class="mb-6 text-center">
-      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary text-white mb-4 shadow-custom-lg">
-        <i class="fa fa-robot text-3xl"></i>
+    <!-- Pesan Awal -->
+    <div class="flex gap-3">
+      <img src="https://r2.erweima.ai/i/81595c8c-1350-4496-8b76-8f13b8069900.png" class="avatar-img flex-shrink-0 mt-1">
+      <div class="bg-aiBg rounded-2xl p-4 rounded-tl-sm max-w-[85%]">
+        <p class="text-sm text-gray-800 leading-relaxed">Halo! 👋<br>Saya Nathra AI. Tanya apa saja atau kirimkan gambar/foto, saya akan bantu menjawab dan menjelaskan dengan lengkap!</p>
       </div>
-      <h1 class="text-[clamp(1.8rem,5vw,2.3rem)] font-bold text-gray-800 mb-1">Nathra AI</h1>
-      <p class="text-gray-500 text-sm">Asisten cerdas untuk menjawab pertanyaan Anda</p>
-    </header>
-
-    <!-- Kotak Chat -->
-    <div id="chatBox" class="flex-1 overflow-y-auto scrollbar-hide bg-white rounded-3xl shadow-custom p-5 mb-5 space-y-5 border border-gray-100">
-      
-      <!-- Pesan Awal -->
-      <div class="flex gap-3 max-w-[85%]">
-        <div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-          <i class="fa fa-robot"></i>
-        </div>
-        <div class="bg-gray-50 rounded-2xl rounded-tl-none p-4 shadow-sm">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="font-semibold text-sm text-primary">Nathra AI</span>
-            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-            <span class="text-xs text-gray-400">Online</span>
-          </div>
-          <p class="text-sm leading-relaxed">Halo. Ada yang bisa saya bantu? Silakan sampaikan pertanyaan Anda dengan jelas.</p>
-        </div>
-      </div>
-
     </div>
-
-    <!-- Input -->
-    <div class="relative">
-      <div class="absolute inset-y-0 left-4 flex items-center text-gray-400">
-        <i class="fa fa-comment-o text-lg"></i>
-      </div>
-      <input 
-        id="userInput" 
-        type="text" 
-        placeholder="Ketik pesan Anda di sini..." 
-        class="w-full pl-12 pr-14 py-4 rounded-xl border border-gray-200 shadow-sm focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition bg-white text-sm"
-      >
-      <button 
-        onclick="kirimPesan()" 
-        class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-all duration-200 shadow-sm"
-      >
-        <i class="fa fa-paper-plane"></i>
-      </button>
-    </div>
-
-    <p class="text-center text-xs text-gray-400 mt-4">© 2026 Nathra AI • Semua Hak Dilindungi</p>
 
   </div>
 
+  <!-- Preview Gambar -->
+  <div id="previewContainer" class="hidden px-4 max-w-4xl mx-auto w-full mb-2">
+    <div class="bg-white border border-gray-200 rounded-xl p-2 inline-block relative">
+      <img id="imagePreview" src="" class="max-h-32 rounded-lg">
+      <button onclick="hapusGambar()" class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs shadow">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Input Area -->
+  <div class="bg-white border-t border-gray-200 px-4 py-4">
+    <div class="max-w-4xl mx-auto relative flex items-center bg-gray-100 rounded-full pl-4 pr-2 py-2">
+      
+      <!-- Tombol Lampir -->
+      <label for="imageInput" class="cursor-pointer text-gray-500 hover:text-primary transition">
+        <i class="fa fa-paperclip text-lg"></i>
+      </label>
+      <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="pilihGambar(event)">
+
+      <!-- Input Teks -->
+      <input id="userInput" type="text" placeholder="Ketik pesan atau kirim gambar..." 
+        class="flex-1 bg-transparent border-0 focus:ring-0 outline-none px-3 py-2 text-sm text-gray-800 placeholder:text-gray-500">
+
+      <!-- Tombol Kirim -->
+      <button onclick="kirimPesan()" class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition">
+        <i class="fa fa-paper-plane"></i>
+      </button>
+    </div>
+    <p class="text-center text-xs text-gray-400 mt-3">© 2026 Nathra AI</p>
+  </div>
+
   <script>
+    let base64Gambar = "";
+    const AVATAR_AI = "https://r2.erweima.ai/i/81595c8c-1350-4496-8b76-8f13b8069900.png";
+
+    function pilihGambar(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = evt => {
+        base64Gambar = evt.target.result;
+        document.getElementById('imagePreview').src = base64Gambar;
+        document.getElementById('previewContainer').classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function hapusGambar() {
+      base64Gambar = "";
+      document.getElementById('previewContainer').classList.add('hidden');
+      document.getElementById('imageInput').value = "";
+    }
+
     async function kirimPesan() {
       const input = document.getElementById('userInput');
-      const pesan = input.value.trim();
-      if (!pesan) return;
+      const teks = input.value.trim();
+      if (!teks && !base64Gambar) return;
 
-      tambahPesan('Anda', pesan, true);
+      tambahPesan('user', teks, base64Gambar);
       input.value = '';
-
       const idStatus = tambahStatus();
 
       try {
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ pesan })
+          body: JSON.stringify({ pesan: teks, media: base64Gambar })
         });
         const data = await res.json();
         gantiStatusJawaban(idStatus, data.jawaban);
-
+        hapusGambar();
       } catch {
-        gantiStatusJawaban(idStatus, 'Terjadi gangguan. Silakan coba lagi nanti.');
+        gantiStatusJawaban(idStatus, 'Ups, ada gangguan sedikit. Coba kirim lagi ya!');
       }
     }
 
-    function tambahPesan(pengirim, teks, isUser=false) {
+    function tambahPesan(jenis, teks, gambar="") {
       const chatBox = document.getElementById('chatBox');
       const div = document.createElement('div');
-      
-      if (isUser) {
-        // Pesan Pengguna
-        div.className = "flex gap-3 max-w-[85%] ml-auto flex-row-reverse";
+      div.className = "flex gap-3 " + (jenis === 'user' ? 'justify-end' : 'justify-start');
+
+      if (jenis === 'user') {
         div.innerHTML = `
-          <div class="w-9 h-9 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-            <i class="fa fa-user"></i>
+          <div class="bg-userBg rounded-2xl p-4 rounded-tr-sm max-w-[85%]">
+            ${gambar ? `<img src="${gambar}" class="max-h-40 rounded-lg mb-3">` : ''}
+            ${teks ? `<p class="text-sm text-gray-800 whitespace-pre-wrap">${teks}</p>` : ''}
           </div>
-          <div class="bg-indigo-50 rounded-2xl rounded-tr-none p-4 shadow-sm">
-            <div class="flex items-center gap-2 mb-2 justify-end">
-              <span class="text-xs text-gray-400">Anda</span>
-              <span class="font-semibold text-sm text-gray-700"></span>
-            </div>
-            <p class="text-sm leading-relaxed">${teks.replace(/\n/g, '<br>')}</p>
+          <div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center flex-shrink-0 mt-1">
+            <i class="fa fa-user text-white text-sm"></i>
           </div>
         `;
       } else {
-        // Pesan Bot
-        div.className = "flex gap-3 max-w-[85%]";
         div.innerHTML = `
-          <div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-            <i class="fa fa-robot"></i>
-          </div>
-          <div class="bg-gray-50 rounded-2xl rounded-tl-none p-4 shadow-sm">
-            <div class="flex items-center gap-2 mb-2">
-              <span class="font-semibold text-sm text-primary">Nathra AI</span>
-              <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-            </div>
-            <p class="text-sm leading-relaxed">${teks.replace(/\n/g, '<br>')}</p>
+          <img src="${AVATAR_AI}" class="avatar-img flex-shrink-0 mt-1">
+          <div class="bg-aiBg rounded-2xl p-4 rounded-tl-sm max-w-[85%]">
+            <p class="text-sm text-gray-800 whitespace-pre-wrap">${teks}</p>
           </div>
         `;
       }
-
       chatBox.appendChild(div);
       div.scrollIntoView({ behavior: 'smooth', block: 'end' });
-      return div;
     }
 
     function tambahStatus() {
       const chatBox = document.getElementById('chatBox');
-      const id = 'status-' + Date.now();
+      const id = 'stat'+Date.now();
       const div = document.createElement('div');
       div.id = id;
-      div.className = "flex gap-3 max-w-[85%]";
+      div.className = "flex gap-3 justify-start";
       div.innerHTML = `
-        <div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-          <i class="fa fa-robot"></i>
-        </div>
-        <div class="bg-gray-50 rounded-2xl rounded-tl-none p-4 shadow-sm">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="font-semibold text-sm text-primary">Nathra AI</span>
-            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-          </div>
-          <div class="flex gap-1.5 items-center h-6">
-            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0s"></div>
-            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
-            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+        <img src="${AVATAR_AI}" class="avatar-img flex-shrink-0 mt-1">
+        <div class="bg-aiBg rounded-2xl p-4 rounded-tl-sm">
+          <div class="flex gap-1.5 items-center h-5">
+            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0s"></div>
+            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.15s"></div>
+            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.3s"></div>
           </div>
         </div>
       `;
@@ -186,27 +184,18 @@
     }
 
     function gantiStatusJawaban(id, teks) {
-      const elemen = document.getElementById(id);
-      if (!elemen) return;
-      
-      elemen.innerHTML = `
-        <div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-          <i class="fa fa-robot"></i>
-        </div>
-        <div class="bg-gray-50 rounded-2xl rounded-tl-none p-4 shadow-sm">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="font-semibold text-sm text-primary">Nathra AI</span>
-            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-          </div>
-          <p class="text-sm leading-relaxed">${teks.replace(/\n/g, '<br>')}</p>
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.innerHTML = `
+        <img src="${AVATAR_AI}" class="avatar-img flex-shrink-0 mt-1">
+        <div class="bg-aiBg rounded-2xl p-4 rounded-tl-sm max-w-[85%]">
+          <p class="text-sm text-gray-800 whitespace-pre-wrap">${teks}</p>
         </div>
       `;
     }
 
-    document.getElementById('userInput').addEventListener('keypress', e => {
-      if (e.key === 'Enter') kirimPesan();
-    });
+    document.getElementById('userInput').addEventListener('keypress', e => e.key === 'Enter' && kirimPesan());
   </script>
 </body>
-        </html>
+    </html>
   
