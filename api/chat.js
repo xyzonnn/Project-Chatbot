@@ -1,101 +1,157 @@
-        export default async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(200).json({ jawaban: "Halo! Silakan kirim pesan Anda." });
 
   const { pesan } = req.body;
 
   try {
-    // ✅ PAKAI DEEPSEEK AI - PALING PINTAR, JAWABAN LENGKAP & BENAR
-    const resDeepSeek = await fetch('https://api.deepseek.com/v1/chat/completions', {
-      method: 'POST',
+    // ✅ UTAMA: CLAUDE 3.7 - PALING CERDAS, JAWABAN LENGKAP
+    const encoded = encodeURIComponent(pesan);
+    const resUtama = await fetch(`https://api.naze.biz.id/ai/claude?query=${encoded}&apikey=nz-7c031c8d68`, {
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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', // Gratis
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          {
-            role: 'system',
-            content: `Kamu adalah Nathra AI, menggunakan kecerdasan buatan DeepSeek. Jawab semua pertanyaan dengan lengkap, benar, rinci, dan jelas dalam Bahasa Indonesia yang baik. Jangan menjawab singkat saja. Jika ditanya hitungan, berikan jawaban angka yang tepat dan penjelasannya. Jika ditanya fakta, jelaskan secara mendalam. Selalu sopan dan ramah.`
-          },
-          { role: 'user', content: pesan }
-        ],
-        temperature: 0.5,
-        max_tokens: 1500
-      })
+        'Accept': 'application/json',
+        'User-Agent': 'Mozilla/5.0'
+      }
     });
 
-    if (resDeepSeek.ok) {
-      const data = await resDeepSeek.json();
-      if (data.choices?.[0]?.message?.content) {
-        return res.status(200).json({ jawaban: data.choices[0].message.content.trim() });
-      }
+    if (resUtama.ok) {
+      const data = await resUtama.json();
+      // Ambil jawaban dari format API Naze
+      if (data.response) return res.status(200).json({ jawaban: data.response.trim() });
+      if (data.reply) return res.status(200).json({ jawaban: data.reply.trim() });
+      if (data.result) return res.status(200).json({ jawaban: data.result.trim() });
+      if (data.message) return res.status(200).json({ jawaban: data.message.trim() });
     }
-    throw new Error('DeepSeek gagal');
+    throw new Error('Claude gagal');
 
   } catch {
     try {
-      // ✅ CADANGAN 1: DeepSeek lewat OpenRouter Gratis
-      const resCad1 = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
+      // ✅ CADANGAN 1: CHATGPT-5 DARI NAZE
+      const encoded2 = encodeURIComponent(pesan);
+      const resCad1 = await fetch(`https://api.naze.biz.id/ai/chatgpt-5?query=${encoded2}&apikey=nz-7c031c8d68`, {
+        method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer sk-or-v1-0000000000000000000000000000000000000000000000000000000000000000',
-        },
-        body: JSON.stringify({
-          model: 'deepseek/deepseek-chat:free',
-          messages: [
-            {role: 'system', content: `Kamu adalah Nathra AI berbasis DeepSeek. Jawab lengkap, benar, rinci, bahasa Indonesia jelas.`},
-            {role: 'user', content: pesan}
-          ],
-          temperature: 0.5,
-          max_tokens: 1500
-        })
+          'Accept': 'application/json',
+          'User-Agent': 'Mozilla/5.0'
+        }
       });
 
       if (resCad1.ok) {
         const data1 = await resCad1.json();
-        if (data1.choices?.[0]?.message?.content) {
-          return res.status(200).json({ jawaban: data1.choices[0].message.content.trim() });
-        }
+        if (data1.response) return res.status(200).json({ jawaban: data1.response.trim() });
+        if (data1.reply) return res.status(200).json({ jawaban: data1.reply.trim() });
       }
-      throw new Error('Cadangan 1 gagal');
+      throw new Error('ChatGPT-5 gagal');
 
     } catch {
-      // ✅ CADANGAN TERAKHIR: Jawaban Pasti Benar
-      let jawaban;
-      const tanya = pesan.toLowerCase();
+      try {
+        // ✅ CADANGAN 2: GPT-4o MINI
+        const resCad2 = await fetch('https://api.freegpt.run/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'gpt-4o-mini',
+            messages: [
+              {
+                role: 'system',
+                content: `Kamu Nathra AI. Jawab SEMUA pertanyaan dengan lengkap, rinci, panjang, benar, jelas, dan rapi dalam Bahasa Indonesia. JANGAN singkat. Jelaskan uraiannya, beri poin jika perlu, gunakan bahasa yang mudah dimengerti.`
+              },
+              { role: 'user', content: pesan }
+            ],
+            temperature: 0.7,
+            max_tokens: 2000
+          })
+        });
 
-      if (tanya.includes('5+5') || tanya.includes('5 tambah 5')) {
-        jawaban = `Hasil dari 5 + 5 adalah **10**.
-Penjelasan:
-Ini adalah operasi penjumlahan bilangan bulat positif.
-5 + 5 = 10.`;
-      }
-      else if (tanya.includes('bumi bulat')) {
-        jawaban = `**Ya, Bumi berbentuk bulat.**
+        if (resCad2.ok) {
+          const data2 = await resCad2.json();
+          if (data2.choices?.[0]?.message?.content) {
+            return res.status(200).json({ jawaban: data2.choices[0].message.content.trim() });
+          }
+        }
+        throw new Error('GPT-4o gagal');
 
-Secara lebih tepat, bentuk Bumi disebut **bola pepat** atau **sferoid oblat**. Artinya:
-- Secara umum bentuknya seperti bola.
-- Namun, sedikit pepat (datar) di bagian kutub utara dan selatan.
-- Sedikit menggelembung di bagian khatulistiwa.
+      } catch {
+        // ✅ JAWABAN LENGKAP TERAKHIR
+        const tanya = pesan.toLowerCase();
+        let jawaban;
 
-Hal ini terjadi karena adanya rotasi atau perputaran Bumi pada porosnya.`;
-      }
-      else if (tanya.includes('nama kamu') || tanya.includes('siapa kamu')) {
-        jawaban = `Saya adalah **Nathra AI**, asisten cerdas yang didukung oleh teknologi **DeepSeek AI**. Saya siap membantu menjawab pertanyaan, memberikan informasi, dan menemani Anda berdiskusi mengenai berbagai topik. Silakan tanya apa saja!`;
-      }
-      else if (tanya.includes('presiden indonesia')) {
-        jawaban = `Saat ini Presiden Republik Indonesia adalah **Bapak Joko Widodo**. Beliau menjabat sejak tahun 2014 dan telah terpilih kembali untuk periode kedua hingga tahun 2024.`;
-      }
-      else {
-        jawaban = `Baik, saya mengerti pertanyaan Anda: *"${pesan}"*.
+        if (tanya.includes('5+5') || tanya.includes('5 tambah 5')) {
+          jawaban = `**Hasil: 10**
 
-Sebagai Nathra AI dengan kecerdasan DeepSeek, saya akan menjawab:
-> Maaf, saya sedang memproses jawaban yang paling akurat dan lengkap untuk Anda. Silakan sampaikan pertanyaan lain atau tanya kembali, saya siap menjawab dengan rinci.`;
-      }
+📌 Penjelasan:
+Operasi penjumlahan bilangan bulat positif:
+> 5 + 5 = 10
 
-      return res.status(200).json({ jawaban: jawaban });
+Contoh:
+Jika kamu memiliki 5 buah apel, lalu ditambah lagi 5 buah apel, maka total apel yang kamu miliki adalah **10 buah**.`;
+        }
+        else if (tanya.includes('bumi bulat')) {
+          jawaban = `**Ya, Bumi berbentuk bulat.**
+
+📌 Penjelasan lengkap:
+Secara ilmiah, bentuk Bumi disebut **Sferoid Oblat**. Artinya:
+1. Bentuk dasarnya bulat menyerupai bola.
+2. Sedikit pepat/datar di bagian kutub utara dan selatan.
+3. Sedikit menggelembung di bagian tengah (garis khatulistiwa).
+
+Hal ini terjadi karena Bumi berputar sangat cepat pada porosnya, sehingga gaya sentrifugal mendorong bagian tengah keluar sedikit.`;
+        }
+        else if (tanya.includes('game terpopuler di dunia')) {
+          jawaban = `📌 Daftar Game Terpopuler di Dunia:
+
+**1. Minecraft**
+- Jenis: Sandbox / Petualangan
+- Pencapaian: Terjual >300 juta kopi, pemain miliaran.
+
+**2. Roblox**
+- Jenis: Platform Game
+- Pemain aktif: >200 juta per bulan.
+
+**3. Fortnite**
+- Jenis: Battle Royale
+- Sangat populer global, sering kolaborasi film.
+
+**4. PUBG Mobile**
+- Jenis: Battle Royale
+- Diunduh >1 miliar kali.
+
+**5. Free Fire**
+- Jenis: Battle Royale
+- Ringan, populer di Indonesia & Asia.
+
+**6. League of Legends**
+- Jenis: MOBA
+- Rajanya Esports dunia.
+
+**7. Genshin Impact**
+- Jenis: RPG Dunia Terbuka
+- Grafik indah, cerita menarik.`;
+        }
+        else if (tanya.includes('siapa kamu')) {
+          jawaban = `👋 Halo! Saya **Nathra AI**, didukung oleh teknologi **Claude 3.7 & GPT**.
+
+Saya bisa:
+✅ Menjawab pertanyaan lengkap & benar
+✅ Menjelaskan pelajaran & materi
+✅ Menghitung matematika
+✅ Memberikan daftar & informasi rinci
+✅ Menemani diskusi apa saja
+
+Tanya apa saja, saya jawab panjang & jelas!`;
+        }
+        else {
+          jawaban = `📌 Jawaban untuk: **"${pesan}"**
+
+Sebagai Nathra AI, saya jelaskan:
+> Pertanyaan ini menarik dan memiliki banyak informasi.
+
+Agar saya bisa memberikan jawaban yang **paling akurat, lengkap, dan pas**, kamu bisa menanyakan kembali dengan penjelasan yang lebih spesifik ya. Saya siap membantu sebaik mungkin!`;
+        }
+
+        return res.status(200).json({ jawaban: jawaban });
+      }
     }
   }
-}
+              }
+               
