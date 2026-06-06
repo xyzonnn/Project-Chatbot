@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nathra AI</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+
   <script>
     tailwind.config = {
       theme: {
@@ -20,182 +22,367 @@
       }
     }
   </script>
+
   <style type="text/tailwindcss">
     @layer utilities {
-      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-      .scrollbar-hide::-webkit-scrollbar { display: none; }
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+
       .avatar-img {
         width: 32px;
         height: 32px;
-        border-radius: 50%;
+        border-radius: 9999px;
         object-fit: cover;
         border: 2px solid #8B5CF6;
       }
     }
   </style>
 </head>
+
 <body class="bg-secondary min-h-screen flex flex-col">
 
-  <!-- Header -->
+  <!-- HEADER -->
   <header class="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
     <div class="flex items-center gap-3">
-      <img src="https://r2.erweima.ai/i/81595c8c-1350-4496-8b76-8f13b8069900.png" alt="Logo" class="avatar-img w-8 h-8">
+      <img
+        src="https://r2.erweima.ai/i/81595c8c-1350-4496-8b76-8f13b8069900.png"
+        class="avatar-img"
+      >
       <h1 class="font-semibold text-lg text-gray-800">Nathra AI</h1>
     </div>
-    <p class="text-xs text-gray-500">Asisten Cerdas</p>
+
+    <p class="text-xs text-gray-500">
+      Asisten Cerdas
+    </p>
   </header>
 
-  <!-- Chat Box -->
-  <div id="chatBox" class="flex-1 overflow-y-auto scrollbar-hide px-4 py-6 space-y-6 max-w-4xl mx-auto w-full">
-    
-    <!-- Pesan Awal -->
+  <!-- CHAT -->
+  <div
+    id="chatBox"
+    class="flex-1 overflow-y-auto scrollbar-hide px-4 py-6 space-y-6 max-w-4xl mx-auto w-full"
+  >
+
+    <!-- PESAN AWAL -->
     <div class="flex gap-3">
-      <img src="https://r2.erweima.ai/i/81595c8c-1350-4496-8b76-8f13b8069900.png" class="avatar-img flex-shrink-0 mt-1">
+      <img
+        src="https://r2.erweima.ai/i/81595c8c-1350-4496-8b76-8f13b8069900.png"
+        class="avatar-img flex-shrink-0 mt-1"
+      >
+
       <div class="bg-aiBg rounded-2xl p-4 rounded-tl-sm max-w-[85%]">
-        <p class="text-sm text-gray-800 leading-relaxed">Halo! 👋<br>Saya Nathra AI. Tanya apa saja atau kirimkan gambar/foto, saya akan bantu menjawab dan menjelaskan dengan lengkap!</p>
+        <p class="text-sm text-gray-800 leading-relaxed">
+          Halo! 👋<br>
+          Saya Nathra AI. Tanya apa saja atau kirimkan gambar/foto,
+          saya akan bantu menjawab dengan lengkap!
+        </p>
       </div>
     </div>
 
   </div>
 
-  <!-- Preview Gambar -->
-  <div id="previewContainer" class="hidden px-4 max-w-4xl mx-auto w-full mb-2">
+  <!-- PREVIEW -->
+  <div
+    id="previewContainer"
+    class="hidden px-4 max-w-4xl mx-auto w-full mb-2"
+  >
     <div class="bg-white border border-gray-200 rounded-xl p-2 inline-block relative">
-      <img id="imagePreview" src="" class="max-h-32 rounded-lg">
-      <button onclick="hapusGambar()" class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs shadow">
+      <img id="imagePreview" class="max-h-32 rounded-lg">
+
+      <button
+        onclick="hapusGambar()"
+        class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs shadow"
+      >
         <i class="fa fa-times"></i>
       </button>
     </div>
   </div>
 
-  <!-- Input Area -->
+  <!-- INPUT -->
   <div class="bg-white border-t border-gray-200 px-4 py-4">
     <div class="max-w-4xl mx-auto relative flex items-center bg-gray-100 rounded-full pl-4 pr-2 py-2">
-      
-      <!-- Tombol Lampir -->
-      <label for="imageInput" class="cursor-pointer text-gray-500 hover:text-primary transition">
+
+      <!-- FILE -->
+      <label
+        for="imageInput"
+        class="cursor-pointer text-gray-500 hover:text-primary transition"
+      >
         <i class="fa fa-paperclip text-lg"></i>
       </label>
-      <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="pilihGambar(event)">
 
-      <!-- Input Teks -->
-      <input id="userInput" type="text" placeholder="Ketik pesan atau kirim gambar..." 
-        class="flex-1 bg-transparent border-0 focus:ring-0 outline-none px-3 py-2 text-sm text-gray-800 placeholder:text-gray-500">
+      <input
+        type="file"
+        id="imageInput"
+        accept="image/*"
+        class="hidden"
+        onchange="pilihGambar(event)"
+      >
 
-      <!-- Tombol Kirim -->
-      <button onclick="kirimPesan()" class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition">
+      <!-- TEXT -->
+      <input
+        id="userInput"
+        type="text"
+        placeholder="Ketik pesan atau kirim gambar..."
+        class="flex-1 bg-transparent border-0 focus:ring-0 outline-none px-3 py-2 text-sm text-gray-800 placeholder:text-gray-500"
+      >
+
+      <!-- SEND -->
+      <button
+        onclick="kirimPesan()"
+        class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center"
+      >
         <i class="fa fa-paper-plane"></i>
       </button>
     </div>
-    <p class="text-center text-xs text-gray-400 mt-3">© 2026 Nathra AI</p>
+
+    <p class="text-center text-xs text-gray-400 mt-3">
+      © 2026 Nathra AI
+    </p>
   </div>
 
   <script>
-    let base64Gambar = "";
-    const AVATAR_AI = "https://r2.erweima.ai/i/81595c8c-1350-4496-8b76-8f13b8069900.png";
 
-    function pilihGambar(e) {
-      const file = e.target.files[0];
+    let base64Gambar = "";
+
+    const AVATAR_AI =
+      "https://r2.erweima.ai/i/81595c8c-1350-4496-8b76-8f13b8069900.png";
+
+    // =========================
+    // PILIH GAMBAR
+    // =========================
+
+    function pilihGambar(event) {
+
+      const file = event.target.files[0];
+
       if (!file) return;
+
       const reader = new FileReader();
-      reader.onload = evt => {
-        base64Gambar = evt.target.result;
-        document.getElementById('imagePreview').src = base64Gambar;
-        document.getElementById('previewContainer').classList.remove('hidden');
+
+      reader.onload = function(e) {
+
+        base64Gambar = e.target.result;
+
+        document.getElementById("imagePreview").src =
+          base64Gambar;
+
+        document
+          .getElementById("previewContainer")
+          .classList.remove("hidden");
       };
+
       reader.readAsDataURL(file);
     }
 
+    // =========================
+    // HAPUS GAMBAR
+    // =========================
+
     function hapusGambar() {
+
       base64Gambar = "";
-      document.getElementById('previewContainer').classList.add('hidden');
-      document.getElementById('imageInput').value = "";
+
+      document
+        .getElementById("previewContainer")
+        .classList.add("hidden");
+
+      document.getElementById("imageInput").value = "";
     }
 
-    async function kirimPesan() {
-      const input = document.getElementById('userInput');
-      const teks = input.value.trim();
-      if (!teks && !base64Gambar) return;
+    // =========================
+    // TAMBAH CHAT
+    // =========================
 
-      tambahPesan('user', teks, base64Gambar);
-      input.value = '';
-      const idStatus = tambahStatus();
+    function tambahPesan(jenis, teks, gambar = "") {
 
-      try {
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ pesan: teks, media: base64Gambar })
-        });
-        const data = await res.json();
-        gantiStatusJawaban(idStatus, data.jawaban);
-        hapusGambar();
-      } catch {
-        gantiStatusJawaban(idStatus, 'Ups, ada gangguan sedikit. Coba kirim lagi ya!');
-      }
-    }
+      const chatBox = document.getElementById("chatBox");
 
-    function tambahPesan(jenis, teks, gambar="") {
-      const chatBox = document.getElementById('chatBox');
-      const div = document.createElement('div');
-      div.className = "flex gap-3 " + (jenis === 'user' ? 'justify-end' : 'justify-start');
+      const div = document.createElement("div");
 
-      if (jenis === 'user') {
+      div.className =
+        "flex gap-3 " +
+        (jenis === "user"
+          ? "justify-end"
+          : "justify-start");
+
+      if (jenis === "user") {
+
         div.innerHTML = `
           <div class="bg-userBg rounded-2xl p-4 rounded-tr-sm max-w-[85%]">
-            ${gambar ? `<img src="${gambar}" class="max-h-40 rounded-lg mb-3">` : ''}
-            ${teks ? `<p class="text-sm text-gray-800 whitespace-pre-wrap">${teks}</p>` : ''}
+            ${gambar
+              ? `<img src="${gambar}" class="max-h-40 rounded-lg mb-3">`
+              : ""
+            }
+
+            ${teks
+              ? `<p class="text-sm text-gray-800 whitespace-pre-wrap">${teks}</p>`
+              : ""
+            }
           </div>
+
           <div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center flex-shrink-0 mt-1">
             <i class="fa fa-user text-white text-sm"></i>
           </div>
         `;
-      } else {
+      }
+
+      else {
+
         div.innerHTML = `
-          <img src="${AVATAR_AI}" class="avatar-img flex-shrink-0 mt-1">
+          <img
+            src="${AVATAR_AI}"
+            class="avatar-img flex-shrink-0 mt-1"
+          >
+
           <div class="bg-aiBg rounded-2xl p-4 rounded-tl-sm max-w-[85%]">
             <p class="text-sm text-gray-800 whitespace-pre-wrap">${teks}</p>
           </div>
         `;
       }
+
       chatBox.appendChild(div);
-      div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+      div.scrollIntoView({
+        behavior: "smooth",
+        block: "end"
+      });
     }
 
+    // =========================
+    // STATUS TYPING
+    // =========================
+
     function tambahStatus() {
-      const chatBox = document.getElementById('chatBox');
-      const id = 'stat'+Date.now();
-      const div = document.createElement('div');
+
+      const chatBox = document.getElementById("chatBox");
+
+      const id = "stat" + Date.now();
+
+      const div = document.createElement("div");
+
       div.id = id;
+
       div.className = "flex gap-3 justify-start";
+
       div.innerHTML = `
-        <img src="${AVATAR_AI}" class="avatar-img flex-shrink-0 mt-1">
+        <img
+          src="${AVATAR_AI}"
+          class="avatar-img flex-shrink-0 mt-1"
+        >
+
         <div class="bg-aiBg rounded-2xl p-4 rounded-tl-sm">
           <div class="flex gap-1.5 items-center h-5">
-            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0s"></div>
-            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.15s"></div>
-            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.3s"></div>
+            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:.15s"></div>
+            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:.3s"></div>
           </div>
         </div>
       `;
+
       chatBox.appendChild(div);
-      div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+      div.scrollIntoView({
+        behavior: "smooth",
+        block: "end"
+      });
+
       return id;
     }
 
+    // =========================
+    // GANTI STATUS
+    // =========================
+
     function gantiStatusJawaban(id, teks) {
+
       const el = document.getElementById(id);
+
       if (!el) return;
+
       el.innerHTML = `
-        <img src="${AVATAR_AI}" class="avatar-img flex-shrink-0 mt-1">
+        <img
+          src="${AVATAR_AI}"
+          class="avatar-img flex-shrink-0 mt-1"
+        >
+
         <div class="bg-aiBg rounded-2xl p-4 rounded-tl-sm max-w-[85%]">
           <p class="text-sm text-gray-800 whitespace-pre-wrap">${teks}</p>
         </div>
       `;
     }
 
-    document.getElementById('userInput').addEventListener('keypress', e => e.key === 'Enter' && kirimPesan());
+    // =========================
+    // KIRIM PESAN
+    // =========================
+
+    async function kirimPesan() {
+
+      const input = document.getElementById("userInput");
+
+      const teks = input.value.trim();
+
+      if (!teks && !base64Gambar) return;
+
+      tambahPesan("user", teks, base64Gambar);
+
+      input.value = "";
+
+      const idStatus = tambahStatus();
+
+      try {
+
+        // =========================
+        // API NAZE
+        // =========================
+
+        const url =
+          `https://api.naze.biz.id/ai/gemini?query=${encodeURIComponent(teks)}&prompt=${encodeURIComponent("Kamu Nathra AI, jawab dengan lengkap dan bahasa Indonesia.")}&media=${encodeURIComponent(base64Gambar)}&apikey=nz-7c031c8d68`;
+
+        const response = await fetch(url);
+
+        const data = await response.json();
+
+        console.log(data);
+
+        // FIX UNDEFINED
+        const jawaban =
+          data.text ||
+          data.result ||
+          data.message ||
+          data.response ||
+          "Tidak ada jawaban.";
+
+        gantiStatusJawaban(idStatus, jawaban);
+
+        hapusGambar();
+
+      } catch (err) {
+
+        console.log(err);
+
+        gantiStatusJawaban(
+          idStatus,
+          "Ups, API error atau limit."
+        );
+      }
+    }
+
+    // ENTER
+    document
+      .getElementById("userInput")
+      .addEventListener("keypress", function(e) {
+
+        if (e.key === "Enter") {
+          kirimPesan();
+        }
+
+      });
+
   </script>
 </body>
-    </html>
-  
+        </html>
