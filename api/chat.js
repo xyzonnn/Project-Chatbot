@@ -6,27 +6,39 @@ export default async function handler(req, res) {
 
     const { pesan, media } = req.query;
 
-    const prompt =
-      "Kamu Nathra AI. Jawab lengkap dalam Bahasa Indonesia.";
+    if (!pesan && !media) {
+      return res.status(400).json({
+        status: false,
+        message: "Masukkan ?pesan="
+      });
+    }
 
+    // Prompt AI
+    const prompt =
+      "Kamu Nathra AI. Jawab lengkap, panjang, jelas, rapi, dan gunakan Bahasa Indonesia.";
+
+    // URL API
     const url =
       `https://api.naze.biz.id/ai/gemini?query=${encodeURIComponent(pesan || "")}&prompt=${encodeURIComponent(prompt)}&media=${encodeURIComponent(media || "")}&apikey=nz-7c031c8d68`;
 
-    console.log("URL:", url);
-
+    // Fetch
     const response = await fetch(url);
 
-    // DEBUG
-    console.log("STATUS:", response.status);
+    // JSON
+    const data = await response.json();
 
-    const raw = await response.text();
+    console.log(data);
 
-    console.log("RAW:", raw);
+    // FIX RESULT
+    const jawaban =
+      data?.result?.text ||
+      "AI tidak memberikan jawaban.";
 
-    // BALIKIN RAW LANGSUNG
+    // Response
     return res.status(200).json({
       status: true,
-      raw: raw
+      creator: "Nathra AI",
+      jawaban
     });
 
   } catch (err) {
